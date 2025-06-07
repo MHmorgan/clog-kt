@@ -70,7 +70,7 @@ data class CliLoggerConfig(
         val NON_TERMINAL = CliLoggerConfig(
             format = { msg, args -> MessageFormatter.arrayFormat(msg, args).message },
             render = ::fileRender,
-            print = ::println,
+            print = { t.println(it, stderr = false) },
         )
     }
 }
@@ -107,7 +107,7 @@ private fun fileRender(msg: CliLogger.LogMessage): String {
         .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
     val lvl = msg.level.name.padEnd(5)
     return buildString {
-        append("[$lvl|$time] ${msg.message}")
+        append("[$lvl|$time] ${msg.caller}  ${msg.message}")
         msg.throwable?.let {
             appendLine()
             append(it.stackTraceToString())
