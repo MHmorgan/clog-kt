@@ -75,7 +75,10 @@ data class CliLoggerConfig(
     }
 }
 
-private fun terminalRender(msg: CliLogger.LogMessage): String {
+/**
+ * The render function used by the [CliLoggerConfig.TERMINAL] configuration.
+ */
+fun terminalRender(msg: CliLogger.LogMessage): String {
     val prefix = when (msg.level) {
         Level.TRACE -> "[.] "
         Level.DEBUG -> "[ ] "
@@ -102,7 +105,12 @@ private fun terminalRender(msg: CliLogger.LogMessage): String {
     }
 }
 
-private fun fileRender(msg: CliLogger.LogMessage): String {
+/**
+ * The render function used by the [CliLoggerConfig.NON_TERMINAL] configuration.
+ *
+ * This function will not colorize the output.
+ */
+fun fileRender(msg: CliLogger.LogMessage): String {
     val time = LocalDateTime.now()
         .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
     val lvl = msg.level.name.padEnd(5)
