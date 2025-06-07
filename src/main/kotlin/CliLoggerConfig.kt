@@ -14,7 +14,16 @@ data class CliLoggerConfig(
     /**
      * The log level.
      */
-    var level: LogLevel,
+    var level: LogLevel = LogLevel.INFO,
+
+    /**
+     * A filter function that is called for each log message.
+     * If the function returns `false` the log message will be ignored.
+     *
+     * Can be used for more fine-grained filtering than the [level] property.
+     * This allows filtering based on the caller.
+     */
+    var filter: ((CliLogger.FilterData) -> Boolean)? = null,
 
     /**
      * The message formatting function.
@@ -52,7 +61,6 @@ data class CliLoggerConfig(
     companion object {
         @JvmStatic
         val TERMINAL = CliLoggerConfig(
-            level = LogLevel.INFO,
             format = { msg, args -> MessageFormatter.arrayFormat(msg, args).message },
             render = ::terminalRender,
             print = { t.println(it, stderr = true)},
@@ -60,7 +68,6 @@ data class CliLoggerConfig(
 
         @JvmStatic
         val NON_TERMINAL = CliLoggerConfig(
-            level = LogLevel.INFO,
             format = { msg, args -> MessageFormatter.arrayFormat(msg, args).message },
             render = ::fileRender,
             print = ::println,

@@ -28,7 +28,13 @@ class CliLogger internal constructor(
         requireNotNull(level) { "$caller: Expected non-null log level." }
         requireNotNull(messagePattern) { "$caller: Expected non-null message pattern." }
 
+        config.filter?.let { filter ->
+            val data = FilterData(caller, level)
+            if (!filter(data)) return
+        }
+
         val msg = LogMessage(
+            caller = caller,
             level = level,
             message = when (arguments) {
                 null -> messagePattern
@@ -57,9 +63,12 @@ class CliLogger internal constructor(
     override fun isErrorEnabled(marker: Marker?) = isErrorEnabled()
 
     data class LogMessage(
+        val caller: String,
         val level: Level,
         val message: String,
         val throwable: Throwable? = null,
         val theme: Theme,
     )
+
+    data class FilterData(val caller: String, val level: Level)
 }

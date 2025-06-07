@@ -20,8 +20,8 @@ object CliLoggerFactory : ILoggerFactory {
         }
     }
 
-    fun config(block: CliLoggerConfig.() -> Unit) {
-        config.apply(block)
+    fun config(block: CliLoggerConfigBuilder.() -> Unit) {
+        CliLoggerConfigBuilder(config).block()
     }
 
     override fun getLogger(name: String?): CliLogger {
