@@ -14,7 +14,7 @@ data class CliLoggerConfig(
     /**
      * The log level.
      */
-    var level: LogLevel = LogLevel.INFO,
+    var level: Level = Level.INFO,
 
     /**
      * A filter function that is called for each log message.

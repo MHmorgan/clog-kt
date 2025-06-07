@@ -1,6 +1,7 @@
 package dev.hirth.clog
 
 import com.github.ajalt.mordant.rendering.Theme
+import org.slf4j.event.Level
 
 @DslMarker
 annotation class ConfigDsl
@@ -13,7 +14,7 @@ class CliLoggerConfigBuilder(private val config: CliLoggerConfig) {
     /**
      * Set the log level.
      */
-    var level: LogLevel by config::level
+    var level: Level by config::level
 
     /**
      * The [Theme] to use for log display, when printing to the terminal.

@@ -3,26 +3,28 @@ package dev.hirth.clog
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.io.ByteArrayOutputStream
+import org.slf4j.event.Level
+import org.slf4j.helpers.MessageFormatter
 import java.io.PrintStream
 
 class CliLoggerTest {
-    val buffer = ByteArrayOutputStream()
+    lateinit var output: String
 
     val config = CliLoggerConfig(
-        level = LogLevel.INFO,
-        out = PrintStream(buffer),
+        level = Level.INFO,
+        format = { msg, args -> MessageFormatter.arrayFormat(msg, args).message },
         render = { "${it.level}: ${it.message}" },
+        print = { output = it },
     )
 
     @BeforeEach
-    fun setUp() {
-        buffer.reset()
+    fun setup() {
+        output = ""
     }
 
     @Test
     fun `Test TRACE level`() {
-        val log = CliLogger("test", config.copy(level = LogLevel.TRACE))
+        val log = CliLogger("test", config.copy(level = Level.TRACE))
 
         exec { log.trace("trace") }.let {
             assertThat(it).isEqualTo("TRACE: trace")
@@ -43,7 +45,7 @@ class CliLoggerTest {
 
     @Test
     fun `Test INFO level`() {
-        val log = CliLogger("test", config.copy(level = LogLevel.INFO))
+        val log = CliLogger("test", config.copy(level = Level.INFO))
 
         exec { log.trace("trace") }.let {
             assertThat(it).isEmpty()
@@ -64,7 +66,7 @@ class CliLoggerTest {
 
     @Test
     fun `Test ERROR level`() {
-        val log = CliLogger("test", config.copy(level = LogLevel.ERROR))
+        val log = CliLogger("test", config.copy(level = Level.ERROR))
 
         exec { log.trace("trace") }.let {
             assertThat(it).isEmpty()
@@ -105,8 +107,6 @@ class CliLoggerTest {
 
     fun exec(block: () -> Unit): String {
         block()
-        val s = buffer.toString()
-        buffer.reset()
-        return s.trimIndent()
+        return output.trimIndent()
     }
 }
