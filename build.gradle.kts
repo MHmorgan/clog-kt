@@ -4,27 +4,24 @@
  */
 
 plugins {
-    val kotlinVersion = "2.1.20"
+    val kotlinVersion = "2.1.21"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
 
     id("org.jetbrains.dokka") version "1.9.20"
 
     `java-library`
-    // application // Java CLI application
 }
 
-group = "org.example"
+group = "dev.hirth"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-
-    compileOnly("org.jetbrains:annotations:26.0.2") // IDE support annotations
+    api("org.slf4j:slf4j-api:2.0.17")
+    api("com.github.ajalt.mordant:mordant:3.0.2")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.12.1")
     testImplementation("org.assertj:assertj-core:3.27.3")
@@ -35,22 +32,6 @@ kotlin {
     jvmToolchain(17)
 }
 
-// application {
-//     mainClass.set("org.example.MainKt")
-// }
-
 tasks.named<Test>("test") {
     useJUnitPlatform()
 }
-
-tasks.dokkaHtml {
-    outputDirectory.set(file("$rootDir/docs"))
-
-    dokkaSourceSets {
-        named("main") {
-            // Use DOC.md in root for package documentation.
-            includes.from("DOC.md")
-        }
-    }
-}
-
