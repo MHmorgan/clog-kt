@@ -16,7 +16,7 @@ object CliLoggerFactory : ILoggerFactory {
         val ti = Terminal().terminalInfo
         config = when (ti.outputInteractive) {
             true -> CliLoggerConfig.TERMINAL
-            else -> CliLoggerConfig.NON_TERMINAL
+            else -> CliLoggerConfig.FILE
         }
     }
 

@@ -67,7 +67,7 @@ data class CliLoggerConfig(
         )
 
         @JvmStatic
-        val NON_TERMINAL = CliLoggerConfig(
+        val FILE = CliLoggerConfig(
             format = { msg, args -> MessageFormatter.arrayFormat(msg, args).message },
             render = ::fileRender,
             print = { t.println(it, stderr = false) },
@@ -105,14 +105,15 @@ fun terminalRender(msg: CliLogger.LogMessage): String {
     }
 }
 
+private val dateTimeFmt = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss")
+
 /**
- * The render function used by the [CliLoggerConfig.NON_TERMINAL] configuration.
+ * The render function used by the [CliLoggerConfig.FILE] configuration.
  *
  * This function will not colorize the output.
  */
 fun fileRender(msg: CliLogger.LogMessage): String {
-    val time = LocalDateTime.now()
-        .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+    val time = LocalDateTime.now().format(dateTimeFmt)
     val lvl = msg.level.name.padEnd(5)
     return buildString {
         append("[$lvl|$time] ${msg.caller}  ${msg.message}")
