@@ -1,20 +1,27 @@
 package dev.hirth.clog
 
+import com.github.ajalt.mordant.terminal.Terminal
 import org.slf4j.ILoggerFactory
 import java.util.concurrent.ConcurrentHashMap
 
 object CliLoggerFactory : ILoggerFactory {
     private val loggers = ConcurrentHashMap<String, CliLogger>()
 
-    var config: CliLoggerConfig
-        private set
+    /**
+     * The configuration used for all loggers.
+     */
+    val config: CliLoggerConfig
 
     init {
-        config = CliLoggerConfig.TERMINAL
+        val ti = Terminal().terminalInfo
+        config = when (ti.outputInteractive) {
+            true -> CliLoggerConfig.TERMINAL
+            else -> CliLoggerConfig.NON_TERMINAL
+        }
     }
 
-    fun level(level: LogLevel) {
-        config = config.copy(level = level)
+    fun config(block: CliLoggerConfig.() -> Unit) {
+        config.apply(block)
     }
 
     override fun getLogger(name: String?): CliLogger {

@@ -1,9 +1,9 @@
 package dev.hirth.clog
 
+import com.github.ajalt.mordant.rendering.Theme
 import org.slf4j.Marker
 import org.slf4j.event.Level
 import org.slf4j.helpers.AbstractLogger
-import org.slf4j.helpers.MessageFormatter
 
 /**
  * The log levels supported by the [CliLogger].
@@ -26,20 +26,22 @@ class CliLogger internal constructor(
         throwable: Throwable?
     ) {
         requireNotNull(level) { "$caller: Expected non-null log level." }
-
-        val fmt = when (throwable) {
-            null -> MessageFormatter.arrayFormat(messagePattern, arguments)
-            else -> MessageFormatter.arrayFormat(messagePattern, arguments, throwable)
-        }
+        requireNotNull(messagePattern) { "$caller: Expected non-null message pattern." }
 
         val msg = LogMessage(
             level = level,
-            message = fmt.message,
+            message = when (arguments) {
+                null -> messagePattern
+                else -> config.format(messagePattern, arguments)
+            },
             throwable = throwable,
+            theme = config.theme,
         )
 
-        val txt = config.format(msg)
-        config.out.println(txt)
+        val txt = config.render(msg)
+        synchronized(config) {
+            config.print(txt)
+        }
     }
 
     override fun isTraceEnabled() = config.level == LogLevel.TRACE
@@ -58,5 +60,6 @@ class CliLogger internal constructor(
         val level: Level,
         val message: String,
         val throwable: Throwable? = null,
+        val theme: Theme,
     )
 }

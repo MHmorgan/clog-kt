@@ -12,7 +12,7 @@ class CliLoggerTest {
     val config = CliLoggerConfig(
         level = LogLevel.INFO,
         out = PrintStream(buffer),
-        format = { "${it.level}: ${it.message}" },
+        render = { "${it.level}: ${it.message}" },
     )
 
     @BeforeEach
@@ -95,7 +95,7 @@ class CliLoggerTest {
         }
 
         run {
-            val config = config.copy(format = { "${it.level}: ${it.message} ${it.throwable?.message}" })
+            val config = config.copy(render = { "${it.level}: ${it.message} ${it.throwable?.message}" })
             val log = CliLogger("test", config)
             exec { log.error("error", t) }.let {
                 assertThat(it).isEqualTo("ERROR: error test-throwable")

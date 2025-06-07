@@ -13,9 +13,9 @@ CLI logging library for Kotlin and SLF4J.
 ### Features
 
 - Designed for [Slf4j](https://www.slf4j.org/)
-- Only logging to `stdout` or `stderr`
+- Logging to any [`PrintStream`](https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/io/PrintStream.html)
 - Colored and formatted logging through [`mordant`](https://github.com/ajalt/mordant)
-
+- Only prints colors to TTY output
 
 ## Security
 
