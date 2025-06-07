@@ -43,6 +43,64 @@ class CliLogger internal constructor(
         }
     }
 
+    /**
+     * Print a success log message.
+     *
+     * This is an info message which uses the success color from the theme.
+     */
+    fun success(msg: String, args: Array<out Any?>? = null) {
+        config.filter?.let { filter ->
+            val data = FilterData(caller, Level.INFO)
+            if (!filter(data)) return
+        }
+
+        val msg = LogMessage(
+            caller = caller,
+            level = Level.INFO,
+            message = when (args) {
+                null -> msg
+                else -> config.format(msg, args)
+            },
+            theme = config.theme,
+        )
+
+        val txt = config.render(msg).let {
+            config.theme.success(it)
+        }
+        synchronized(config) {
+            config.print(txt)
+        }
+    }
+
+    /**
+     * Print an emphasis log message.
+     *
+     * This is an info message which uses the info color from the theme.
+     */
+    fun emphasis(msg: String, args: Array<out Any?>? = null) {
+        config.filter?.let { filter ->
+            val data = FilterData(caller, Level.INFO)
+            if (!filter(data)) return
+        }
+
+        val msg = LogMessage(
+            caller = caller,
+            level = Level.INFO,
+            message = when (args) {
+                null -> msg
+                else -> config.format(msg, args)
+            },
+            theme = config.theme,
+        )
+
+        val txt = config.render(msg).let {
+            config.theme.info(it)
+        }
+        synchronized(config) {
+            config.print(txt)
+        }
+    }
+
     override fun isTraceEnabled() = config.level == Level.TRACE
     override fun isDebugEnabled() = config.level >= Level.DEBUG
     override fun isInfoEnabled() = config.level >= Level.INFO
