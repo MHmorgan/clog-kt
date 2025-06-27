@@ -183,22 +183,3 @@ dependencies {
 ## 🔒 Security
 
 ⚠️ **Important**: This library is not hardened against log injection attacks. Always sanitize user input before logging:
-
-```kotlin
-// ❌ Dangerous - don't log user input directly
-logger.info("User input: $userInput")
-
-// ✅ Safe - sanitize first
-val sanitized = userInput.replace('\n', ' ').replace('\r', ' ')
-logger.info("User input: $sanitized")
-
-// ✅ Better - use custom formatter
-CliLoggerFactory.config {
-    format { message, args ->
-        val sanitizedArgs = args.map { arg ->
-            arg?.toString()?.replace(Regex("[\r\n\t]"), " ") ?: "null"
-        }.toTypedArray()
-        message.format(*sanitizedArgs)
-    }
-}
-```
