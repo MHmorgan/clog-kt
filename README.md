@@ -1,9 +1,9 @@
 Clog 🪠
 =======
 
-> 🚀 **A modern CLI logging library for Kotlin that brings color and clarity to your terminal output**
+> 🚀 **A modern CLI logging library for Kotlin that brings color and clarity to your terminal**
 
-Clog is a powerful, easy-to-use logging library designed specifically for command-line applications. Built on top of SLF4J, it provides beautiful terminal output with colors, customizable formatting, and intelligent TTY detection.
+Clog is a powerful, easy-to-use logging library designed specifically for command-line applications. Built on top of SLF4J, it provides beautiful terminal output with colors, customizable formatting, and TTY detection.
 
 ## 📋 Overview
 
