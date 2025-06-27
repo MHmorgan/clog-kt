@@ -182,4 +182,4 @@ dependencies {
 
 ## 🔒 Security
 
-⚠️ **Important**: This library is not hardened against log injection attacks. Always sanitize user input before logging:
+⚠️ **Important**: This library is not hardened against log injection attacks. Always sanitize user input before logging.
