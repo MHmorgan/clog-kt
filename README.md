@@ -23,7 +23,7 @@ Clog automatically detects your output environment and switches between:
 - 🔧 **Drop-in SLF4J replacement** - Works with existing [SLF4J](https://www.slf4j.org/) code
 - 🎨 **Colored terminal output** - Beautiful formatting through [`mordant`](https://github.com/ajalt/mordant)
 - 🖨️ **Flexible output** - Log to any [`PrintStream`](https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/io/PrintStream.html)
-- 🤖 **Smart TTY detection** - Only prints colors to interactive terminals
+- 🤖 **TTY detection** - Only prints colors to interactive terminals
 - 🎭 **Custom themes** - Fully customizable color schemes
 - 🔍 **Advanced filtering** - Caller-based and level-based filtering
 - 📝 **Custom formatting** - Override message formatting and rendering
