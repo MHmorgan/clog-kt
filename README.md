@@ -93,8 +93,8 @@ val fileConfig = CliLoggerConfig.FILE
 
 ### 🖥️ Terminal Mode
 ```
-[*] Application starting...
-[✅] Database connection established
+[ ] Application starting...
+[*] Database connection established
 [!] Cache miss for key: user:123
 [!!] Failed to process request
 ```
